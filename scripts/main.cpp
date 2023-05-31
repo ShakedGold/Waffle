@@ -1,4 +1,4 @@
-#include <waffle.h>
+#include <Waffle.h>
 
 int main() {
 	return 0;
