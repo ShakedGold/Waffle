@@ -1,0 +1,9 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.7)
+
+project([projectDir])
+
+add_executable([projectDir]
+    main.cpp
+)
+
+target_link_libraries([projectDir] Waffle)

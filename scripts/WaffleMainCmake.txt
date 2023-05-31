@@ -1,0 +1,8 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.7)
+project(Waffle)
+
+add_subdirectory(glfw)
+add_subdirectory([projectDir])
+add_subdirectory(Waffle)
+
+include_directories(Waffle/src)

@@ -1,8 +1,9 @@
 #! /bin/bash
 
-GLFWDIR=$(pwd)/../glfw
-IMGUIDIR=$(pwd)/../imgui
 SCRIPTDIR=$(pwd)
+WAFFLEDIR=$(echo $(pwd)/../ | sed -E "s/(scripts\/\.\.\/)//g" | sed "s/\/$//g")
+GLFWDIR=$WAFFLEDIR/glfw
+IMGUIDIR=$WAFFLEDIR/imgui
 
 # Compile and Build GLFW
 unamestr="$(uname | tr '[:upper:]' '[:lower:]')"
@@ -39,18 +40,20 @@ cd $SCRIPTDIR
 
 # source settings to be able to call them by variable $var1
 # ProjectSettings
-source <(grep = <(grep -A5 '\[ProjectSettings\]' ../config/project.ini) | sed 's/ *= */=/g' | sed "s/;/#/g") 2> /dev/null
+source <(grep = <(grep -A5 '\[ProjectSettings\]' $WAFFLEDIR/config/project.ini) | sed 's/ *= */=/g' | sed "s/;/#/g") 2> /dev/null
+
+PROJECTDIR=$WAFFLEDIR/$name
 
 # setup CMakeLists.txt for project
 mkdir $name
-mv $name ..
-touch CMakeLists.txt
-echo "CMAKE_MINIMUM_REQUIRED(VERSION 3.7)
-" >> CMakeLists.txt
-echo "project($name)" >> CMakeLists.txt
-cp CMakeLists.txt ../$name/
+mv $name $WAFFLEDIR/
 
-sed -i "s/\[projectDir\]/$name/g" WaffleCmake.txt
-sed -i "s/\[projectSrc\]/$name\/main.cpp/g" WaffleCmake.txt
+sed -i "s/\[projectDir\]/$name/g" WaffleMainCmake.txt
+sed -i "s/\[projectDir\]/$name/g" ProjectCmake.txt
 
-cp WaffleCmake.txt ../CMakeLists.txt
+cp WaffleMainCmake.txt $WAFFLEDIR/CMakeLists.txt
+cp ProjectCmake.txt $PROJECTDIR/CMakeLists.txt
+cp main.cpp $PROJECTDIR/main.cpp
+
+echo "Succefully Created Project"
+echo "Project $name is located at $PROJECTDIR"
